@@ -23,7 +23,7 @@ function numToWords(number){
 	if(num != NaN){
 		if(str.length == 7){
 			if(num == 1000000){
-				word = ones[1]+" "+upper[3]+word;
+				word = ones[1]+" "+upper[2]+word;
 			}else{
 				console.log("not within the scope!");
 			}
@@ -95,7 +95,7 @@ function numToWords(number){
 						}else if(toStr==1){
 							continue;
 						}
-					}else if(div == 1 && toStr.length == 1){
+					}else if(div == 1 && mod > 0){
 						word = word+" "+teen[parseInt(toStr[0])];
 						j=0;
 					}else{
@@ -118,7 +118,7 @@ function numToWords(number){
 					mod = num%10000;
 					toStr = mod.toString().split("");
 					if(div == 1 && toStr.length == 4){
-						word =teen[parseInt(toStr[0])]+" "+upper[1];
+						word =teen[parseInt(toStr[0])];
 						teenBool = true;
 					}else{
 						word = word+" "+tens[div];
@@ -168,7 +168,7 @@ function numToWords(number){
 						}else if(toStr==1){
 							continue;
 						}
-					}else if(div == 1 && toStr.length == 1){
+					}else if(div == 1 && mod > 0){
 						word = word+" "+teen[parseInt(toStr[0])];
 						j=0;
 					}else{
@@ -213,7 +213,7 @@ function numToWords(number){
 						}else if(toStr==1){
 							continue;
 						}
-					}else if(div == 1 && toStr.length == 1){
+					}else if(div == 1 && mod > 0){
 						word = word+" "+teen[parseInt(toStr[0])];
 						j=0;
 					}else{
@@ -245,7 +245,7 @@ function numToWords(number){
 						}else if(toStr==1){
 							continue;
 						}
-					}else if(div == 1 && toStr.length == 2){
+					}else if(div == 1 && mod > 0){
 						word = word+" "+teen[parseInt(toStr[0])];
 						j=0;
 					}else{
@@ -262,16 +262,16 @@ function numToWords(number){
 				}
 			}
 		}else if(str.length == 2){
-			for(var j=3; j > 0; j-=1){
+			for(var j=2; j > 0; j-=1){
 				if(j==2){
 					div = parseInt(num/10);
 					mod = num%10;
 					toStr = mod.toString().split("");
-					if(div == 1 && toStr.length == 1){
+					if(div == 1 && mod > 0){
 						word = teen[parseInt(toStr[0])];
 						j=0;
 					}else{
-						word = word+" "+tens[div];
+						word = tens[div];
 					}
 				}else if(j==1){
 					div = parseInt(mod/1);
@@ -290,14 +290,84 @@ function numToWords(number){
 	}else{
 		console.log("Not a number!\n");
 	}
-	return null;
+	return word;
 }
 
-function wordsToNum(){
-	return null;
+function wordsToNum(words){
+	var splitWords = words.toString().split(" ");
+	var map = [];
+	map["zero"] = 0;
+	map["one"] = 1;
+	map["two"] = 2;
+	map["three"] = 3;
+	map["four"] = 4;
+	map["five"] = 5;
+	map["six"] = 6;
+	map["seven"] = 7;
+	map["eight"] = 8;
+	map["nine"] = 9;
+	map["ten"] = 10;
+	map["eleven"] = 11;
+	map["twelve"] = 12;
+	map["thirteen"] = 13;
+	map["fourteen"] = 14;
+	map["fifteen"] = 15;
+	map["sixteen"] = 16;
+	map["seventeen"] = 17;
+	map["eighteen"] = 18;
+	map["nineteen"] = 19;
+	map["twenty"] = 20;
+	map["thirty"] = 30;
+	map["forty"] = 40;
+	map["fifty"] = 50;
+	map["sixty"] = 60;
+	map["seventy"] = 70;
+	map["eighty"] = 80;
+	map["ninety"] = 90;
+	map["hundred"] = 100;
+	map["thousand"] = 1000;
+	map["million"] = 1000000;
+	var num = 0;
+	var temp = 0;
+	for(var i = 0; i < splitWords.length; i+=1){
+		if(splitWords[i] == "million"){
+			num = num * map[splitWords[i]];
+		}else if(splitWords[i] == "thousand"){
+			num = num * map[splitWords[i]];
+		}else if(splitWords[i] == "hundred"){
+			temp = map[splitWords[i-1]] * map[splitWords[i]];
+			num = num + temp;
+		}else{
+			if(splitWords[i+1] == "hundred"){
+				continue;
+			}else{
+				num = num + map[splitWords[i]];
+			}
+		}		
+	}
+	console.log(num);
+	return num;
 }
 
-function wordsToCurrency(){
+function wordsToCurrency(wordsToCur){
+	var stringNum = wordsToCur.toString().split("'");
+	console.log(stringNum);
+	var temp = stringNum[1];
+	var num = wordsToNum(temp);
+	var cur = stringNum[3];
+	var words = "";
+	if(cur === "JPY"){
+		words = cur+num.toString();
+	}else if(cur === "USD"){
+		words = cur+num.toString();
+	}else if(cur === "PHP"){
+		words = cur+num.toString();
+	}else{
+		console.log("Currency that entered is not supported.");
+		console.log("Accepted Currency: PHP, JPY, USD");
+		return null;		
+	}
+	console.log(words);
 	return null;
 }
 
