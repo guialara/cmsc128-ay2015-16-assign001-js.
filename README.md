@@ -2,5 +2,7 @@
 	* numToWords();
 	* wordsToNum();
 	* wordsToCurrency();
-	* numberDelimited(); - SOON...
+	* numberDelimited();
+		- Reviewing of code still needed.
+		- All functions are using console.log() for output.	
 

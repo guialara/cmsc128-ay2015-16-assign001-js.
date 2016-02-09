@@ -5,7 +5,12 @@
 							accepts words and the 2nd argument (JPY, PHP, USD)
 							accepts number and the number of jumps with the delimiter
 	Progress: 
-		Feb.8, 2016: Fully working numToWords() -> uses console.log() for output
+		Feb.8, 2016: 	Fully working numToWords() -> uses console.log() for output
+		Feb.9, 2016: 	Fully working wordsToNum() and wordsToCurrency() -> uses console.log() for output
+				Some bugs discovered and fixed for fxn numToWords().
+				Fully working numbersDelimited() -> uses console.log() for output
+
+	Status: Still Ongoing (code needed to be reviewed again)
 */
 
 function numToWords(number){
@@ -25,7 +30,8 @@ function numToWords(number){
 			if(num == 1000000){
 				word = ones[1]+" "+upper[2]+word;
 			}else{
-				console.log("not within the scope!");
+				console.log("One to one million only!");
+				return null;
 			}
 		}else if(str.length == 6){
 			for(var j=6; j > 0; j-=1){
@@ -285,16 +291,21 @@ function numToWords(number){
 			}		
 		}else if(str.length == 1){
 			word = ones[num];
+		}else{
+			console.log("One to one million only!");
+			return null
 		}
 		console.log(word+"\n");	
 	}else{
 		console.log("Not a number!\n");
+		return null;
 	}
 	return word;
 }
 
 function wordsToNum(words){
 	var splitWords = words.toString().split(" ");
+	/*var keys = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight','nine','eleven','twelve','thirteen','fourteen', 'fifteen', 'sixteen','seventeen','eighteen', 'nineteen','ten', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety','hundred','thousand','million'];*/
 	var map = [];
 	map["zero"] = 0;
 	map["one"] = 1;
@@ -345,32 +356,70 @@ function wordsToNum(words){
 			}
 		}		
 	}
-	console.log(num);
-	return num;
+	if(num <= 1000000 && num != NaN){
+		console.log(num);
+		return num;
+	}else{
+		console.log("ERROR: Number Exceeded One Million.");
+		return null;
+	}
 }
 
 function wordsToCurrency(wordsToCur){
 	var stringNum = wordsToCur.toString().split("'");
-	console.log(stringNum);
+	//console.log(stringNum);
 	var temp = stringNum[1];
 	var num = wordsToNum(temp);
 	var cur = stringNum[3];
 	var words = "";
-	if(cur === "JPY"){
-		words = cur+num.toString();
-	}else if(cur === "USD"){
-		words = cur+num.toString();
-	}else if(cur === "PHP"){
-		words = cur+num.toString();
+	if(num <= 1000000 && num != null){
+		if(cur === "JPY"){
+			words = cur+num.toString();
+		}else if(cur === "USD"){
+			words = cur+num.toString();
+		}else if(cur === "PHP"){
+			words = cur+num.toString();
+		}else{
+			console.log("Currency that entered is not supported.");
+			console.log("Accepted Currency: PHP, JPY, USD");
+			return null;		
+		}
+		console.log(words);
 	}else{
-		console.log("Currency that entered is not supported.");
-		console.log("Accepted Currency: PHP, JPY, USD");
-		return null;		
+		console.log("ERROR: Number exceeded One Million.");
 	}
-	console.log(words);
 	return null;
 }
 
-function numberDelimited(){
+function numberDelimited(numDe){
+	var limited = numDe.toString().split("'");
+	var charNum = limited[0].split(",");
+	var numSplit = charNum[0].split("");
+	var num = parseInt(charNum[0]);
+	var charLim = limited[1];
+	var jump = limited[2].split(",");
+	var jumpSplit = parseInt(jump[1]);
+	var delim = "";	
+	var temp = "";
+	if(num <= 1000000){
+		if(jumpSplit <= numSplit.length){
+			for(var i=0; i < jumpSplit; i+=1){
+				delim = numSplit[(numSplit.length-1)-i]+delim;
+			}
+			delim = charLim+delim;
+			if(numSplit.length - jumpSplit > 0){
+				for(var i = 0; i < numSplit.length-jumpSplit; i+=1){
+					temp = temp+numSplit[i];
+				}
+				delim = temp+delim;
+			}
+			console.log(delim);
+		}else{
+			console.log("To many jumps.");
+		}
+	}else{
+		console.log("ERROR: Number exceeded One Million.");
+	}
+		
 	return null;
 }
