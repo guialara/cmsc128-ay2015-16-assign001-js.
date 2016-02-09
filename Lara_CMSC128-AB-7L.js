@@ -5,7 +5,9 @@
 							accepts words and the 2nd argument (JPY, PHP, USD)
 							accepts number and the number of jumps with the delimiter
 	Progress: 
-		Feb.8, 2016: Fully working numToWords() -> uses console.log() for output
+		Feb.8, 2016:	Fully working numToWords() -> uses console.log() for output
+		Feb.9, 2016: 	Fully working wordsToNum() and wordsToCurrency() -> uses console.log() for output
+				Some bugs discovered and fixed for fxn numToWords().
 */
 
 function numToWords(number){
